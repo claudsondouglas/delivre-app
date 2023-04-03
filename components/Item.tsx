@@ -4,13 +4,13 @@ import cartStore from "@/store/cart";
 import { motion } from "framer-motion";
 import { useState } from "react";
 
-export default function AddToCartButton({ product }: { product: any }) {
+export default function Item({ product }: { product: any }) {
     const add = cartStore((state: any) => state.add);
     const [open, setOpen] = useState(false);
 
     return (
         <>
-            <div className="border-b-2 last:border-none border-slate-100 p-3 px-5 h-full"
+            <div className="border-b-2 last:border-none border-slate-100 p-3 px-5 h-full cursor-pointer"
                 onClick={() => setOpen(true)}
             >
                 <strong className="text-lg text-gray-700">{product.name}</strong>
@@ -34,7 +34,7 @@ export default function AddToCartButton({ product }: { product: any }) {
                     zIndex: open ? 999 : -100,
                     height: open ? '100%' : '0px'
                 }}
-                className={`absolute bg-white overflow-hidden inset-x-0`}
+                className={`fixed bg-white overflow-hidden inset-x-0`}
             >
                 <div className="max-w-4xl mx-auto px-5 lg:px-0 flex flex-col h-full">
                     <div className="flex-1">

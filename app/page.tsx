@@ -1,11 +1,11 @@
-import AddToCartButton from "@/components/AddToCartButton";
+import Item from "@/components/Item";
 import GoToCartButton from "@/components/GoToCartButton";
 
 export default async function Home() {
   const producs = await getData();
 
   return (
-    <div className="h-screen">
+    <div className="min-h-screen">
       <header className="py-5 bg-red-600 text-white">
         <div className="max-w-4xl mx-auto px-5">
           <span className="font-bold text-3xl">delivre.</span>
@@ -19,7 +19,7 @@ export default async function Home() {
 
       <div className="max-w-4xl mx-auto">
         {producs.map((product: any, index: number) => (
-            <AddToCartButton key={index} product={product} />
+            <Item key={index} product={product} />
         ))}
         <GoToCartButton />
       </div>

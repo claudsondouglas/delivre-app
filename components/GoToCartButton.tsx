@@ -3,13 +3,19 @@
 import cartStore from "@/store/cart";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { useRouter } from 'next/navigation';
 
 export default function GoToCartButton({ }: {}) {
     const list = cartStore((state: any) => state.list);
     const total = cartStore((state: any) => state.total);
     const [open, setOpen] = useState(false);
+    const router = useRouter();
 
     function next() {
+        if (open && list.length > 0) {
+            return router.push('/finalizar')
+        }
+
         setOpen(!open);
     }
 
@@ -45,8 +51,9 @@ export default function GoToCartButton({ }: {}) {
                 >
                     {
                         list.map((product: any) => (
-                            <div>
-                                { product.name }
+                            <div className="flex justify-between">
+                                <span>{ product.name }</span>
+                                <span>R${ product.price.toFixed(2) }</span>
                             </div>
                         ))
                     }
@@ -56,9 +63,9 @@ export default function GoToCartButton({ }: {}) {
                     onClick={next}
                 >
                     {
-                        list.length > 0 ? `Finalizar compra (R$${
-                            total.toFixed(2).replace('.', ',')
-                        })` : `Carrinho vazio`
+                        list.length > 0 ? 
+                        (open ? 'Escolher forma de pagamento':`Ver carrinho (R$${total.toFixed(2).replace('.', ',')})`) 
+                        : `Carrinho vazio`
                     }
                 </motion.button>
             </div>

@@ -50,8 +50,8 @@ export default function GoToCartButton({ }: {}) {
                     className="overflow-hidden bg-white rounded-lg mb-3"
                 >
                     {
-                        list.map((product: any) => (
-                            <div className="flex justify-between">
+                        list.map((product: any, index: number) => (
+                            <div className="flex justify-between" key={index}>
                                 <span>{ product.name }</span>
                                 <span>R${ product.price.toFixed(2) }</span>
                             </div>

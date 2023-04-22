@@ -17,7 +17,7 @@ export default async function Home() {
         </div>
       </header>
 
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-4xl mx-auto pb-20">
         {producs.map((product: any, index: number) => (
             <Item key={index} product={product} />
         ))}

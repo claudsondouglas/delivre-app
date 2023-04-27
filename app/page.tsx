@@ -28,7 +28,7 @@ export default async function Home() {
 }
 
 async function getData() {
-  const res = await fetch(`http://localhost:3001/product`, {
+  const res = await fetch(`${process.env.API_URL}/product`, {
     cache: 'no-cache',
   });
 

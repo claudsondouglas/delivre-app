@@ -2,13 +2,21 @@
 
 import cartStore from "@/store/cart";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Backbar from "./Backbar";
 
 export default function Item({ product }: { product: any }) {
     const add = cartStore((state: any) => state.add);
     const [open, setOpen] = useState(false);
     const [quantity, setQuantity] = useState(1);
+
+    useEffect(() => {
+        if (open) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+    }, [open]);
 
     return (
         <>
@@ -44,7 +52,7 @@ export default function Item({ product }: { product: any }) {
                         <strong className="text-lg text-gray-700">{product.name}</strong>
                         <p className="text-gray-500 text-sm md:text-base">{product.description}</p>
                     </div>
-                    <div className="h-auto pb-5 flex gap-5">
+                    <div className="h-auto flex gap-5">
                         <div className="flex items-center w-auto rounded">
                             <button className={`w-6 h-10 rounded-l-lg flex items-center justify-center ${quantity === 1 ? 'text-gray-400' : 'text-red-600'}`}  onClick={() => {
                                 if(quantity > 1)

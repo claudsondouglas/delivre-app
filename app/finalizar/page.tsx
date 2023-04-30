@@ -25,6 +25,9 @@ export default function Page() {
     const list = cartStore((state: any) => state.list);
     const router = useRouter();
 
+    useEffect(() => {
+        document.body.style.overflow = 'auto';
+    }, []);
 
     useEffect(() => {
         if (list.length === 0) {
@@ -47,6 +50,10 @@ export default function Page() {
 
         if (customerName === '' || customerPhone === '') {
             return alert("Informe os dados pessoais para ajuda na entrega");
+        }
+
+        if (paymentMethod === '') {
+            return alert("Informe o método de pagamento");
         }
 
         // foreach list object

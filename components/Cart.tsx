@@ -1,7 +1,7 @@
 'use client';
 
 import cartStore from "@/store/cart";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useRouter, useSearchParams } from 'next/navigation';
 import Backbar from "./Backbar";
@@ -15,6 +15,14 @@ export default function Cart({ }: {}) {
 
 
     const searchParams = useSearchParams()!;
+
+    useEffect(() => {
+        if (open) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+    }, [open]);
 
     useEffect(() => {
         if (searchParams.has('cart') && list.length > 0) {

@@ -29,7 +29,7 @@ export default async function Home() {
 
 async function getData() {
   const res = await fetch(`${process.env.API_URL}/product`, {
-    cache: 'no-cache',
+    cache: 'no-store'
   });
 
   if (!res.ok) {

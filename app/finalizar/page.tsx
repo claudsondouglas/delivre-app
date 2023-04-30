@@ -3,7 +3,7 @@
 import Backbar from "@/components/Backbar";
 import cartStore from "@/store/cart";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
     Popover,
     PopoverContent,
@@ -25,17 +25,12 @@ export default function Page() {
     const list = cartStore((state: any) => state.list);
     const router = useRouter();
 
-    if (list.length === 0) {
-        router.push('/');
 
-        return (
-            <div className="min-h-[80vh] max-w-screen-md mx-auto px-10 pt-10 flex justify-center items-center">
-                <div className="grid">
-                    <label className="input_label">...</label>
-                </div>
-            </div>
-        )
-    }
+    useEffect(() => {
+        if (list.length === 0) {
+            router.push('/');
+        }
+    }, [list])
 
     function submit() {
         if (addressStreet === '') {

@@ -1,5 +1,5 @@
 import Item from "@/components/Item";
-import GoToCartButton from "@/components/GoToCartButton";
+import Cart from "@/components/Cart";
 
 export default async function Home() {
   const producs = await getData();
@@ -21,7 +21,7 @@ export default async function Home() {
         {producs.map((product: any, index: number) => (
             <Item key={index} product={product} />
         ))}
-        <GoToCartButton />
+        <Cart />
       </div>
     </div >
   )

@@ -122,7 +122,7 @@ Para entrar em contato procure por ${customerName} ou ligue para ${customerPhone
                 </div>
                 <div className="grid">
                     <label className="input_label">Referência</label>
-                    <input className="input" name="reference" placeholder="Nome da rua" onInput={(e: any) => {
+                    <input className="input" name="reference" placeholder="Em frente a arvore amarela" onInput={(e: any) => {
                         setAddressReference(e.target.value)
                     }} value={addressReference} />
                 </div>

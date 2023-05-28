@@ -13,7 +13,7 @@ export default function Page() {
                     <span className="font-bold text-gray-700">Whatsapp:</span> (84) 994071801
                 </div>
                 <div className="flex flex-col text-gray-500">
-                    <span className="font-bold text-gray-700">Horario de funcionamento:</span> das 18 as 22 horas
+                    <span className="font-bold text-gray-700">Horario de funcionamento:</span> das 18 as 23 horas
                 </div>
                 <div className="flex flex-col text-gray-500">
                     <span className="font-bold text-gray-700">Endereço:</span> Rua principal, 75, próximo a rodoviaria

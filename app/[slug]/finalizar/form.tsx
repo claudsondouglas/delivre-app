@@ -1,6 +1,5 @@
 'use client';
 
-import Backbar from "@/components/Backbar";
 import cartStore from "@/store/cart";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -10,7 +9,7 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 
-export default function Page() {
+export default function FinishForm({ phone, deliveryPrice } : { phone: string, deliveryPrice: number  }) {
     const [addressStreet, setAddressStreet] = useState('');
     const [addressNumber, setAddressNumber] = useState('');
     const [addressNeighboorhood, setAddressNeighboorhood] = useState('');
@@ -60,16 +59,18 @@ export default function Page() {
         let prices = '';
         let total = 0;
         list.forEach((item: any) => {
-            prices += `${item.quantity}x ${item.name} (R$${(item.price * item.quantity).toFixed(2)})
+            prices += `${item.quantity}x ${item.name} - R$${(item.price * item.quantity).toFixed(2)}${item.observation ? ` (${item.observation})` : ''}
 `;
             total += item.price * item.quantity;
         })
 
-        // open link target blank js
-        window.open(`https://wa.me/5584991956417?text=` + encodeURI(`Olá Delivre, meu pedido é:
+        // se phone começa com 55 fazer nada, se não adicionar
+        let _phone = phone.startsWith('55') ? phone : '55' + phone;
+
+        window.open(`https://wa.me/${_phone}?text=` + encodeURI(`Olá, meu pedido é:
           
 ${prices}--------------------------------------------------------------
-*total: R$${total.toFixed(2)}*
+*total: R$${(total + deliveryPrice).toFixed(2)}*
 *método de pagamento: ${paymentMethod}*${paymentMethod === 'dinheiro' ? `
 *troco para: `+ change.toFixed(2) + `*` : ''
             }
@@ -84,9 +85,7 @@ Para entrar em contato procure por ${customerName} ou ligue para ${customerPhone
     }
 
     return (
-        <div className="min-h-screen max-w-4xl w-full mx-auto px-5 lg:px-0 pt-5">
-            <Backbar href={'/?cart=1'} />
-
+        <>
             <div className="grid gap-3">
                 <h2 className="text-3xl font-bold text-gray-800 mb-3">Entrega e pagamento</h2>
                 <div className="flex justify-between items-center mb-3">
@@ -180,8 +179,9 @@ Para entrar em contato procure por ${customerName} ou ligue para ${customerPhone
                 </div>
             </div>
             <div className="pt-5 pb-5 flex max-w-4xl w-full">
-                <button className="bg-red-600 text-white w-full py-4 rounded" onClick={submit}>Enviar pedido</button>
+                <button className="bg-primary text-white w-full py-4 rounded" onClick={submit}>Enviar pedido</button>
             </div>
-        </div>
+        </>
+
     )
 }

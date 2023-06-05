@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { useRouter, useSearchParams } from 'next/navigation';
 import Backbar from "./Backbar";
 
-export default function Cart({ }: {}) {
+export default function Cart({ slug, deliveryPrice }: { slug: string, deliveryPrice: number }) {
     const list = cartStore((state: any) => state.list);
     const total = cartStore((state: any) => state.total);
     const [open, setOpen] = useState(false);
@@ -26,7 +26,7 @@ export default function Cart({ }: {}) {
 
     useEffect(() => {
         if (searchParams.has('cart') && list.length > 0) {
-            router.replace('/')
+            router.replace('/' + slug)
             setOpen(true);
         }
     }, [searchParams])
@@ -39,7 +39,7 @@ export default function Cart({ }: {}) {
 
     function next() {
         if (open && list.length > 0) {
-            return router.push('/finalizar')
+            return router.push('/' + slug + '/finalizar')
         }
 
         setOpen(!open);
@@ -82,9 +82,14 @@ export default function Cart({ }: {}) {
                                 <div className="flex flex-col">
                                     <span>{product.quantity}x {product.name}</span>
                                     <span>R${product.price.toFixed(2)}</span>
+                                    {
+                                        product.observation && <span className="text-gray-500 text-sm">
+                                            <strong className="font-medium">Observação:</strong> {product.observation}
+                                        </span>
+                                    }
                                 </div>
                                 <div>
-                                    <button onClick={() => { remove(index) }} className="bg-transparent w-10 h-10 flex items-center justify-center rounded-md text-gray-400 duration-300 hover:text-red-600">
+                                    <button onClick={() => { remove(index) }} className="bg-transparent w-10 h-10 flex items-center justify-center rounded-md text-gray-400 duration-300 hover:text-primary">
                                         <svg className="h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="trash"><path className="fill-current" d="M20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Z"></path></svg>
                                     </button>
                                 </div>
@@ -94,12 +99,20 @@ export default function Cart({ }: {}) {
                 </motion.div>
                 <div className="flex flex-col pb-4">
                     {open &&
-                        <div className="border-t-2 py-5 px-5 lg:px-0 flex items-center justify-between font-medium">
-                            <span>Total com entrega:</span> <span>R${(total + 5).toFixed(2).replace('.', ',')}</span>
+                        <div className="border-t-2 py-5 px-5 lg:px-0 grid">
+                            <div className="flex items-center justify-between">
+                                <span>Subtotal:</span> <span>R${total.toFixed(2).replace('.', ',')}</span>
+                            </div>
+                            <div className="flex items-center justify-between">
+                                <span>Entrega:</span> <span>R${deliveryPrice.toFixed(2).replace('.', ',')}</span>
+                            </div>
+                            <div className="flex items-center justify-between font-medium">
+                                <span>Total com entrega:</span> <span>R${(total + deliveryPrice).toFixed(2).replace('.', ',')}</span>
+                            </div>
                         </div>
                     }
                     <motion.button
-                        className={`${list.length > 0 ? 'bg-red-600 duration-500' : 'bg-slate-300'} text-white px-4 py-4 box-border rounded-md mx-5 lg:mx-0`}
+                        className={`${list.length > 0 ? 'bg-primary duration-500' : 'bg-slate-300'} text-white px-4 py-4 box-border rounded-md mx-5 lg:mx-0`}
                         onClick={next}
                     >
                         {

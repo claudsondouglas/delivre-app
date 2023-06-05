@@ -34,7 +34,7 @@ export default async function Home() {
                 <div className="mt-10 grid grid-cols-2 lg:grid-cols-5 gap-10">
                     {
                         producs.map((product: any, index: number) => (
-                            <Link href={`/${product.slug}`}>
+                            <Link key={index} href={`/${product.slug}`}>
                                 <div className="">
                                     <img src={product.profile.profilePicture} alt={product.name} className="rounded-md" />
 

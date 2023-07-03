@@ -15,10 +15,18 @@ export default function Cart({ slug, deliveryPrice }: { slug: string, deliveryPr
 
 
     const searchParams = useSearchParams()!;
+    function meuCallback(event: any) {
+        event.preventDefault();
+        close();
+    }
 
     useEffect(() => {
+        window.removeEventListener('popstate', meuCallback);
+
         if (open) {
+            history.pushState(null, 'Cart', location.pathname);
             document.body.style.overflow = 'hidden';
+            window.addEventListener('popstate', meuCallback);
         } else {
             document.body.style.overflow = 'auto';
         }
@@ -33,9 +41,14 @@ export default function Cart({ slug, deliveryPrice }: { slug: string, deliveryPr
 
     useEffect(() => {
         if (list.length === 0) {
-            setOpen(false);
+            close();
         }
-    }, [list])
+    }, [list]);
+
+    function close() {
+        setOpen(false);
+        history.pushState(null, '', location.pathname);
+    }
 
     function next() {
         if (open && list.length > 0) {
@@ -74,7 +87,7 @@ export default function Cart({ slug, deliveryPrice }: { slug: string, deliveryPr
                     className="overflow-hidden mb-3 px-5 py-5"
                 >
                     {open &&
-                        <Backbar onclick={() => { setOpen(!open) }} />
+                        <Backbar onclick={close} />
                     }
                     {
                         open && list.map((product: any, index: number) => (

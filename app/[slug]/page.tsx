@@ -6,6 +6,7 @@ import { range } from 'lodash';
 import { DateTime } from "luxon";
 import Head from "next/head";
 import UserRepository from "@/repositories/UserRepository";
+import ItemOpen from "@/components/ItemOpen";
 
 export default async function Home({
     params: {
@@ -109,6 +110,7 @@ export default async function Home({
                 {products.map((product: any, index: number) => (
                     <Item key={index} product={product} />
                 ))}
+                <ItemOpen />
                 <Cart slug={slug} deliveryPrice={user.profile.deliveryPrice} />
             </div>
         </div >

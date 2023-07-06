@@ -1,9 +1,10 @@
 'use client';
 
 import cartStore from "@/store/cart";
-import { motion } from "framer-motion";
 import Backbar from "./Backbar";
 import { useEffect, useState } from "react";
+import { Button } from "./button/Index";
+import { Overlay } from "./overlay/Index";
 
 export default function ItemOpen() {
     const add = cartStore((state: any) => state.add);
@@ -15,7 +16,7 @@ export default function ItemOpen() {
 
     useEffect(() => {
         window.removeEventListener('popstate', meuCallback);
-        
+
         if (item !== null) {
             history.pushState(null, 'Página do produto', location.pathname);
             window.addEventListener('popstate', meuCallback);
@@ -38,80 +39,74 @@ export default function ItemOpen() {
         history.pushState(null, '', location.pathname);
     }
 
+    function addToCart() {
+        let _add = {
+            ...item,
+            quantity,
+        }
+
+        if (observation != null || observation != '') {
+            _add.observation = observation;
+        }
+
+        add(_add);
+        setQuantity(1);
+        setOpen(false)
+    }
+
     return (
-        <>
-            <motion.div
-                initial={{
-                    top: '100%',
-                    height: '0px'
-                }}
-                animate={{
-                    top: open ? '0%' : '120%',
-                    zIndex: open ? 999 : -100,
-                    height: open ? '100%' : '0px'
-                }}
-                className={`fixed bg-white overflow-hidden inset-x-0`}
-            >
-                {item != null &&
-                    <div className="max-w-4xl mx-auto px-5 lg:px-0 py-5 flex flex-col h-full">
-                        <div className="flex-1">
-                            <Backbar onclick={close} />
-                            {item.image &&
-                                <div className="mb-3">
-                                    <img src={item.image} alt={item.name} className="w-full aspect-[16/10] object-cover rounded" />
-                                </div>
-                            }
-                            <strong className="text-lg text-gray-700">{item.name}</strong>
-                            <p className="text-gray-500">{item.description}</p>
-                            <div className="mt-5 border-t-2 pt-4">
-                                <label className="mb-2 block font-bold text-gray-600">Observação</label>
-                                <textarea className="input w-full resize-none h-[100px]" placeholder="Eu quero..." onInput={(e) => setObservation(e.currentTarget.value)} value={observation}></textarea>
+        <Overlay.root open={open}>
+            {item != null &&
+                <>
+                    <Overlay.close action={close}/>
+                    <Overlay.content>
+                        {item.image &&
+                            <div className="mb-3">
+                                <img src={item.image} alt={item.name} className="w-full aspect-[16/10] object-cover rounded" />
                             </div>
+                        }
+                        <strong className="text-lg text-gray-700">{item.name}</strong>
+                        <p className="text-gray-500">{item.description}</p>
+                        <div className="mt-5 border-t-2 pt-4">
+                            <label className="mb-2 block font-bold text-gray-600">Observação</label>
+                            <textarea className="input w-full resize-none h-[100px]" placeholder="Eu quero..." onInput={(e) => setObservation(e.currentTarget.value)} value={observation}></textarea>
                         </div>
-                        <div className="h-auto flex gap-5">
-                            <div className="flex items-center w-auto rounded">
-                                <button className={`w-6 h-10 rounded-l-lg flex items-center justify-center ${quantity === 1 ? 'text-gray-400' : 'text-primary'}`} onClick={() => {
-                                    if (quantity > 1)
-                                        setQuantity(quantity - 1)
-                                }}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="minus" className="w-6"><path className="fill-current" d="M19,11H5a1,1,0,0,0,0,2H19a1,1,0,0,0,0-2Z"></path></svg>
-                                </button>
-                                <div className="w-10 flex items-center justify-center h-10 font-semibold text-gray-700">
-                                    {quantity}
-                                </div>
-                                <button className={`w-6 h-10 rounded-r-lg flex items-center justify-center text-primary`} onClick={() => {
-                                    setQuantity(quantity + 1)
-                                }}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="plus" className="w-6"><path className="fill-current" d="M19,11H13V5a1,1,0,0,0-2,0v6H5a1,1,0,0,0,0,2h6v6a1,1,0,0,0,2,0V13h6a1,1,0,0,0,0-2Z"></path></svg>
-                                </button>
-                            </div>
-                            <button className="flex-1 bg-primary text-white rounded-md px-5 py-4 flex justify-between items-center" onClick={() => {
-                                let _add = {
-                                    ...item,
-                                    quantity,
-                                }
-
-                                if (observation != null || observation != '') {
-                                    _add.observation = observation;
-                                }
-
-                                add(_add);
-                                setQuantity(1);
-                                setOpen(false)
+                    </Overlay.content>
+                    
+                    <Overlay.footer>
+                        <div className="flex items-center w-auto rounded">
+                            <button className={`w-6 h-10 rounded-l-lg flex items-center justify-center ${quantity === 1 ? 'text-gray-400' : 'text-primary'}`} onClick={() => {
+                                if (quantity > 1)
+                                    setQuantity(quantity - 1)
                             }}>
-                                <span>Adicionar</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="minus" className="w-6"><path className="fill-current" d="M19,11H5a1,1,0,0,0,0,2H19a1,1,0,0,0,0-2Z"></path></svg>
+                            </button>
+                            <div className="w-10 flex items-center justify-center h-10 font-semibold text-gray-700">
+                                {quantity}
+                            </div>
+                            <button className={`w-6 h-10 rounded-r-lg flex items-center justify-center text-primary`} onClick={() => {
+                                setQuantity(quantity + 1)
+                            }}>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="plus" className="w-6"><path className="fill-current" d="M19,11H13V5a1,1,0,0,0-2,0v6H5a1,1,0,0,0,0,2h6v6a1,1,0,0,0,2,0V13h6a1,1,0,0,0,0-2Z"></path></svg>
+                            </button>
+                        </div>
 
-                                <span className="">{
+                        <Button.root action={addToCart}>
+                            <Button.primary>
+                                Adicionar
+                            </Button.primary>
+                            <Button.right>
+                                {
                                     (item.price * quantity).toLocaleString('pt-BR', {
                                         style: 'currency',
                                         currency: 'BRL',
                                     })
-                                }</span>
-                            </button>
-                        </div>
-                    </div>
-                }
-            </motion.div>
-        </>
+                                }
+                            </Button.right>
+                        </Button.root>
+                    </Overlay.footer>
+                </>
+            }
+        </Overlay.root>
     )
 }

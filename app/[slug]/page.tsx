@@ -4,7 +4,6 @@ import Link from "next/link";
 import { MapPin, Calendar, Info } from "lucide-react";
 import { range } from 'lodash';
 import { DateTime } from "luxon";
-import Head from "next/head";
 import UserRepository from "@/repositories/UserRepository";
 import ItemOpen from "@/components/ItemOpen";
 
@@ -104,7 +103,7 @@ export default async function Home({
             </span>
 
             <div className="max-w-4xl mx-auto pb-20 -mt-[20px]">
-                <div className="px-5 pb-2 text-xl font-bold border-b-2">
+                <div className="px-5 lg:px-0 pb-2 text-xl font-bold border-b-2">
                     Produtos
                 </div>
                 {products.map((product: any, index: number) => (

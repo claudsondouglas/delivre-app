@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useRouter, useSearchParams } from 'next/navigation';
 import Backbar from "./Backbar";
+import { Button } from "./button/Index";
 
 export default function Cart({ slug, deliveryPrice }: { slug: string, deliveryPrice: number }) {
     const list = cartStore((state: any) => state.list);
@@ -110,9 +111,9 @@ export default function Cart({ slug, deliveryPrice }: { slug: string, deliveryPr
                         ))
                     }
                 </motion.div>
-                <div className="flex flex-col pb-4">
+                <div className="flex flex-col pb-4 mx-5">
                     {open &&
-                        <div className="border-t-2 py-5 px-5 lg:px-0 grid">
+                        <div className="border-t-2 py-5 lg:px-0 grid">
                             <div className="flex items-center justify-between">
                                 <span>Subtotal:</span> <span>R${total.toFixed(2).replace('.', ',')}</span>
                             </div>
@@ -124,16 +125,16 @@ export default function Cart({ slug, deliveryPrice }: { slug: string, deliveryPr
                             </div>
                         </div>
                     }
-                    <motion.button
-                        className={`${list.length > 0 ? 'bg-primary duration-500' : 'bg-slate-300'} text-white px-4 py-4 box-border rounded-md mx-5 lg:mx-0`}
-                        onClick={next}
-                    >
-                        {
-                            list.length > 0 ?
-                                (open ? 'Escolher forma de pagamento' : `Ver carrinho (R$${total.toFixed(2).replace('.', ',')})`)
-                                : `Carrinho vazio`
-                        }
-                    </motion.button>
+
+                    <Button.root action={next}>
+                        <Button.primary textPosition="center">
+                            {
+                                list.length > 0 ?
+                                    (open ? 'Escolher forma de pagamento' : `Ver carrinho (R$${total.toFixed(2).replace('.', ',')})`)
+                                    : `Carrinho vazio`
+                            }
+                        </Button.primary>
+                    </Button.root>
                 </div>
             </div>
         </motion.div>

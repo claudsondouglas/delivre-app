@@ -1,7 +1,6 @@
 'use client';
 
 import cartStore from "@/store/cart";
-import Backbar from "./Backbar";
 import { useEffect, useState } from "react";
 import { Button } from "./button/Index";
 import { Overlay } from "./overlay/Index";
@@ -51,7 +50,8 @@ export default function ItemOpen() {
 
         add(_add);
         setQuantity(1);
-        setOpen(false)
+        setOpen(false);
+        selectItem(null);
     }
 
     return (

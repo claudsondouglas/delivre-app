@@ -5,10 +5,12 @@ export default function OverlayRoot({ children, open }: { children: ReactNode, o
     return (
         <motion.div
             initial={{
-                y: '100%'
+                y: '100%',
+                opacity: 0
             }}
             animate={{
-                y: open ? '0%' : '100%'
+                y: open ? '0%' : '100%',
+                opacity: open ? 1 : 0
             }}
             transition={{
                 type: 'tween'

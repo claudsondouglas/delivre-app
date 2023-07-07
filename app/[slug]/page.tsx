@@ -1,4 +1,3 @@
-import Item from "@/components/Item";
 import Cart from "@/components/Cart";
 import Link from "next/link";
 import { MapPin, Calendar, Info } from "lucide-react";
@@ -6,6 +5,7 @@ import { range } from 'lodash';
 import { DateTime } from "luxon";
 import UserRepository from "@/repositories/UserRepository";
 import ItemOpen from "@/components/ItemOpen";
+import { ProductItem } from "@/components/ProductItem/Index";
 
 export default async function Home({
     params: {
@@ -107,7 +107,12 @@ export default async function Home({
                     Produtos
                 </div>
                 {products.map((product: any, index: number) => (
-                    <Item key={index} product={product} />
+                    <ProductItem.root key={index} product={product}>
+                        <ProductItem.info name={product.name} description={product.description}>
+                            <ProductItem.price value={product.price} />
+                        </ProductItem.info>
+                        <ProductItem.image image={product.image} name={product.name} />
+                    </ProductItem.root>
                 ))}
                 <ItemOpen />
                 <Cart slug={slug} deliveryPrice={user.profile.deliveryPrice} />

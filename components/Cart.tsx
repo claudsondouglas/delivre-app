@@ -2,10 +2,10 @@
 
 import cartStore from "@/store/cart";
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 import { useRouter, useSearchParams } from 'next/navigation';
-import Backbar from "./Backbar";
 import { Button } from "./button/Index";
+import { Overlay } from "./overlay/Index";
+import FloatCartButton from "./FloatCartButton";
 
 export default function Cart({ slug, deliveryPrice }: { slug: string, deliveryPrice: number }) {
     const list = cartStore((state: any) => state.list);
@@ -60,36 +60,10 @@ export default function Cart({ slug, deliveryPrice }: { slug: string, deliveryPr
     }
 
     return (
-        <motion.div
-            className="fixed inset-x-0 w-full"
-            initial={{
-                bottom: '-10%',
-            }}
-            animate={{
-                backgroundColor: open ? 'white' : 'transparent',
-                top: open ? '0%' : 'auto',
-                bottom: list.length > 0 ? '0%' : '-20%'
-            }}
-        >
-            <div className="max-w-4xl mx-auto relative h-full flex flex-col justify-between py-2">
-                <motion.div
-                    initial={{
-                        height: '0px',
-                    }}
-                    animate={{
-                        height: open ? 'auto' : '0px',
-                    }}
-                    transition={{
-                        padding: {
-                            duration: 0,
-                            type: "tween"
-                        }
-                    }}
-                    className="overflow-hidden mb-3 px-5 py-5"
-                >
-                    {open &&
-                        <Backbar onclick={close} />
-                    }
+        <>
+            <Overlay.root open={open}>
+                <Overlay.close action={close} />
+                <Overlay.content>
                     {
                         open && list.map((product: any, index: number) => (
                             <div className="flex justify-between items-center border-b last:border-none py-3 border-gray-200" key={index}>
@@ -110,33 +84,33 @@ export default function Cart({ slug, deliveryPrice }: { slug: string, deliveryPr
                             </div>
                         ))
                     }
-                </motion.div>
-                <div className="flex flex-col pb-4 mx-5">
-                    {open &&
-                        <div className="border-t-2 py-5 lg:px-0 grid">
-                            <div className="flex items-center justify-between">
-                                <span>Subtotal:</span> <span>R${total.toFixed(2).replace('.', ',')}</span>
+                </Overlay.content>
+                <Overlay.footer>
+                    <div className="flex flex-col w-full">
+                        {open &&
+                            <div className="border-t-2 py-5 lg:px-0 grid">
+                                <div className="flex items-center justify-between">
+                                    <span>Subtotal:</span> <span>R${total.toFixed(2).replace('.', ',')}</span>
+                                </div>
+                                <div className="flex items-center justify-between">
+                                    <span>Entrega:</span> <span>R${deliveryPrice.toFixed(2).replace('.', ',')}</span>
+                                </div>
+                                <div className="flex items-center justify-between font-medium">
+                                    <span>Total com entrega:</span> <span>R${(total + deliveryPrice).toFixed(2).replace('.', ',')}</span>
+                                </div>
                             </div>
-                            <div className="flex items-center justify-between">
-                                <span>Entrega:</span> <span>R${deliveryPrice.toFixed(2).replace('.', ',')}</span>
-                            </div>
-                            <div className="flex items-center justify-between font-medium">
-                                <span>Total com entrega:</span> <span>R${(total + deliveryPrice).toFixed(2).replace('.', ',')}</span>
-                            </div>
-                        </div>
-                    }
+                        }
 
-                    <Button.root action={next}>
-                        <Button.primary textPosition="center">
-                            {
-                                list.length > 0 ?
-                                    (open ? 'Escolher forma de pagamento' : `Ver carrinho (R$${total.toFixed(2).replace('.', ',')})`)
-                                    : `Carrinho vazio`
-                            }
-                        </Button.primary>
-                    </Button.root>
-                </div>
-            </div>
-        </motion.div>
+                        <Button.root action={next}>
+                            <Button.primary textPosition="center">
+                                Pagamento
+                            </Button.primary>
+                        </Button.root>
+                    </div>
+                </Overlay.footer>
+            </Overlay.root>
+
+            <FloatCartButton text={ list.length > 0 ? `Ver carrinho (R$${total.toFixed(2).replace('.', ',')})` : `Carrinho vazio` } next={next} show={list.length > 0} />
+        </>
     );
 }
